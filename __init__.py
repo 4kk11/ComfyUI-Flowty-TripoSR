@@ -131,16 +131,44 @@ class TripoSRViewer:
         return {"ui": {"mesh": saved}}
 
 
+class TripoSRSaveObj:
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "mesh": ("MESH",)
+            }
+        }
+
+    RETURN_TYPES = ()
+    OUTPUT_NODE = True
+    FUNCTION = "save"
+    CATEGORY = "Flowty TripoSR"
+
+    def save(self, mesh):
+        full_output_folder = get_output_directory()
+        file = "TripoSR.obj"
+        saved_path = path.join(full_output_folder, file)
+
+        single_mesh = mesh[0]
+        single_mesh.apply_transform(np.array([[1, 0, 0, 0], [0, 0, 1, 0], [0, -1, 0, 0], [0, 0, 0, 1]]))
+        single_mesh.export(saved_path)
+
+        return (saved_path, )
+
+
 NODE_CLASS_MAPPINGS = {
     "TripoSRModelLoader": TripoSRModelLoader,
     "TripoSRSampler": TripoSRSampler,
-    "TripoSRViewer": TripoSRViewer
+    "TripoSRViewer": TripoSRViewer,
+    "TripoSRSaveObj": TripoSRSaveObj
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
     "TripoSRModelLoader": "TripoSR Model Loader",
     "TripoSRSampler": "TripoSR Sampler",
-    "TripoSRViewer": "TripoSR Viewer"
+    "TripoSRViewer": "TripoSR Viewer",
+    "TripoSRSaveObj": "TripoSR Save OBJ"
 }
 
 WEB_DIRECTORY = "./web"
