@@ -140,7 +140,8 @@ class TripoSRSaveObj:
             }
         }
 
-    RETURN_TYPES = ()
+    RETURN_TYPES = ("STRING", )
+    RETURN_NAMES = ("saved_path", )
     OUTPUT_NODE = True
     FUNCTION = "save"
     CATEGORY = "Flowty TripoSR"
